@@ -4,7 +4,9 @@ import os.path
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
-INSTALLED_APPS = ('django-basic-models-behaviors')
+INSTALLED_APPS = (
+    'basic_models_behaviors',
+)
 
 DATABASES = {
     'default': {
@@ -13,4 +15,5 @@ DATABASES = {
     }
 }
 
+SECRET_KEY = 'django-basic-models-behaviors-secret-key'
 INTERNAL_IPS = ('127.0.0.1')
