@@ -10,9 +10,6 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
-import sys, os
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -178,8 +175,8 @@ htmlhelp_basename = 'Django-basic-models-behaviors-doc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Django-basic-models-behaviors.tex', u'Django Basic Models Behaviors Documentation',
-   u'Nicolas Dubois \\textless{}nicolas.c.dubois@gmail.com\\textgreater{}', 'manual'),
+    ('index', 'Django-basic-models-behaviors.tex', u'Django Basic Models Behaviors Documentation',
+    u'Nicolas Dubois \\textless{}nicolas.c.dubois@gmail.com\\textgreater{}', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
