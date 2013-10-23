@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from django.utils import unittest
 from models import PublishableModel, SoftDeletableModel, TimestampableModel
-import datetime
-
-# Publishable behaviors --------------------------------------------------------
 
 
 class PublishableMock(PublishableModel):
@@ -27,12 +23,9 @@ class PublishableTest(TestCase):
         self.pm.unpublish()
         self.assert_(self.pm.published_at is None)
 
-# Soft Deletable behaviors -----------------------------------------------------
-
 
 class SoftDeletableMock(SoftDeletableModel):
-    def __unicode__(self):
-        return u'%s' % self.deleted_at
+    pass
 
 
 class SoftDeletableTest(TestCase):
@@ -53,8 +46,6 @@ class SoftDeletableTest(TestCase):
         self.sdm.force_delete()
         self.assert_(self.sdm.id is None)
 
-# Timestampable behaviors ------------------------------------------------------
-
 
 class TimestampableMock(TimestampableModel):
     pass
@@ -63,10 +54,8 @@ class TimestampableMock(TimestampableModel):
 class TimestampableModelTests(TestCase):
 
     def setUp(self):
-        self.tm1 = TimestampableMock()
-        self.tm2 = TimestampableMock()
-        self.tm1.save()
-        self.tm2.save()
+        self.tm1 = TimestampableMock.objects.create()
+        self.tm2 = TimestampableMock.objects.create()
 
     def test_created_at(self):
         self.assert_(self.tm2.created_at > self.tm1.created_at)
@@ -74,5 +63,3 @@ class TimestampableModelTests(TestCase):
     def test_updated_at(self):
         self.tm1.save()
         self.assert_(self.tm2.updated_at < self.tm1.updated_at)
-        
-# TODO: tests for cacheable behaviors ------------------------------------------
