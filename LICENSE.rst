@@ -1,4 +1,4 @@
-Copyright (c) 2011, Nicolas Dubois
+Copyright (c) 2011-2013, Nicolas Dubois
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

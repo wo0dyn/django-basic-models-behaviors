@@ -1,6 +1,10 @@
-VERSION = (0, 2, 0)
+# -*- coding: utf-8 -*-
+
+
+VERSION = (0, 4, 0)
+
 
 def get_version():
-    return ".".join(map(str, VERSION))
+    return '.'.join(map(str, VERSION))
 
 __version__ = get_version()
