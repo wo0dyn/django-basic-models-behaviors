@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from django.db import models
-import datetime
 from managers import CacheManager
+
 
 class PublishableModel(models.Model):
     """ PublishableModel behavior """
@@ -16,7 +18,7 @@ class PublishableModel(models.Model):
         return self.published_at is None
 
     def publish(self, *args, **kwargs):
-        self.published_at = datetime.datetime.now()
+        self.published_at = datetime.now()
         return self.save(*args, **kwargs)
 
     def unpublish(self, *args, **kwargs):
@@ -36,7 +38,7 @@ class SoftDeletableModel(models.Model):
         editable=False)
 
     def delete(self, *args, **kwargs):
-        self.deleted_at = datetime.datetime.now()
+        self.deleted_at = datetime.now()
         return self.save(*args, **kwargs)
 
     def undelete(self, *args, **kwargs):
@@ -56,8 +58,8 @@ class SoftDeletableModel(models.Model):
 class TimestampableModel(models.Model):
     """ TimestampableModel behavior will automatically add and set appropriate
         values to created_at and updated_at fields. """
-        
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True, 
+
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True,
         editable=False)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True,
         db_index=True, editable=False)
@@ -67,10 +69,11 @@ class TimestampableModel(models.Model):
         get_latest_by = "updated_at"
         ordering = ('-updated_at', '-created_at',)
 
+
 class CacheableModel(models.Model):
-    """ CacheableModel added a CacheManager for get() and get_or_create() 
+    """ CacheableModel added a CacheManager for get() and get_or_create()
         methods to load data only once from the database """
-        
+
     cache = CacheManager()
     objects = models.Manager()
 

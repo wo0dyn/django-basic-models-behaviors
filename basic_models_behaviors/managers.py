@@ -1,33 +1,31 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
 from pickle import dumps
 
+from django.db import models
+
+
 class CacheManager(models.Manager):
-    cache = {}
-    
+    def __init__(self):
+        self.cache = {}
+
     def _get_cache_key(self, **kwargs):
         args = kwargs.copy()
         if 'defaults' in args:
             del(args['defaults'])
         return self.model.__module__ + self.model.__name__ + dumps(args)
-    
-    # TODO: refactoring on get() and get_or_create()!!
-    
+
     def get(self, **kwargs):
         cache_key = self._get_cache_key(**kwargs)
-        if not self.cache.has_key(cache_key):
+        if cache_key not in self.cache:
             self.cache[cache_key] = super(CacheManager, self).get(**kwargs)
         return self.cache[cache_key]
-    
+
     def get_or_create(self, **kwargs):
         cache_key = self._get_cache_key(**kwargs)
-        if not self.cache.has_key(cache_key):
+        if cache_key not in self.cache:
             self.cache[cache_key] = super(CacheManager, self).get_or_create(**kwargs)
         return self.cache[cache_key]
 
     def get_all_by_key(self, key):
-        objects = {}
-        for obj in self.all():
-                objects[getattr(obj, key)] = obj
-        return objects
+        return {getattr(obj, key): obj for obj in self.all()}
