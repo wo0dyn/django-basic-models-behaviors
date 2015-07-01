@@ -3,8 +3,10 @@
 from datetime import datetime
 
 from django.db import models
+from django.core.cache import cache
 
 from .managers import CacheManager
+from basic_models_behaviors.managers import get_key_for_instance
 
 
 class PublishableModel(models.Model):
@@ -75,8 +77,15 @@ class CacheableModel(models.Model):
     """ CacheableModel added a CacheManager for get() and get_or_create()
         methods to load data only once from the database """
 
-    cache = CacheManager()
-    objects = models.Manager()
+    objects = CacheManager()
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        super(CacheableModel, self).save(*args, **kwargs)
+        cache.set(get_key_for_instance(self), self, 60 * 60 * 24)
+
+    def delete(self):
+        cache.delete(get_key_for_instance(self))
+        super(CacheableModel, self).delete()
