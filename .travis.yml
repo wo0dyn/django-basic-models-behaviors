@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.3"
+  - "3.4"
+
+install:
+  - pip install -r tests/requirements.txt
+
+env:
+  - PYTHONPATH=.:$PYTHONPATH
+
+script: py.test --ds=tests.settings tests
