@@ -1,7 +1,20 @@
+==============================
 Django: Basic Models Behaviors
 ==============================
 
-django-basic-models-behaviors is a tiny app to provide basic behaviors like:
+.. image:: https://img.shields.io/pypi/v/django-basic-models-behaviors.svg
+    :target: https://pypi.python.org/pypi/django-basic-models-behaviors/
+    :alt: Latest Version on PyPI
+
+.. image:: https://img.shields.io/pypi/pyversions/django-basic-models-behaviors.svg
+    :target: https://pypi.python.org/pypi/django-basic-models-behaviors/
+    :alt: Supported Python versions
+
+.. image:: https://img.shields.io/travis/oscaro/django-basic-models-behaviors.svg
+    :target: https://travis-ci.org/oscaro/django-basic-models-behaviors
+    :alt: TravisCI status
+
+A Django app to provide basic behaviors to models like:
 
 * Timestampable
 * Publishable
