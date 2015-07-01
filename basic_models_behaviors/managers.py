@@ -6,8 +6,10 @@ from django.db import models
 
 
 class CacheManager(models.Manager):
+
     def __init__(self):
         self.cache = {}
+        self.name = 'cache-manager'
 
     def _get_cache_key(self, **kwargs):
         args = kwargs.copy()

@@ -84,7 +84,8 @@ Tests
 
 Run tests::
 
-    $ cd tests && python manage.py test
+    $ pip install -r tests/requirements.txt
+    $ py.test --ds=settings tests
 
 Authors
 -------

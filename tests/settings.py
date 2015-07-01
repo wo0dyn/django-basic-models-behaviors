@@ -1,19 +1,20 @@
-# Django settings for tests project.
+"""
+Django settings for tests project.
+"""
 
-import os.path
+import os
 
-PROJECT_ROOT = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+SECRET_KEY = 'django-basic-models-behaviors-secret-key'
 
 INSTALLED_APPS = (
-    'basic_models_behaviors',
+    'tests',
 )
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'tests.db'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-SECRET_KEY = 'django-basic-models-behaviors-secret-key'
-INTERNAL_IPS = ('127.0.0.1')
