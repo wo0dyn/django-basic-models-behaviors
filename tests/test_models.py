@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from models import PublishableModel, SoftDeletableModel, TimestampableModel
 
-
-class PublishableMock(PublishableModel):
-    pass
+from .models import PublishableMock, SoftDeletableMock, TimestampableMock
 
 
 class PublishableTest(TestCase):
@@ -22,10 +19,6 @@ class PublishableTest(TestCase):
         self.assert_(self.pm.published_at is not None)
         self.pm.unpublish()
         self.assert_(self.pm.published_at is None)
-
-
-class SoftDeletableMock(SoftDeletableModel):
-    pass
 
 
 class SoftDeletableTest(TestCase):
@@ -45,10 +38,6 @@ class SoftDeletableTest(TestCase):
         self.assert_(self.sdm.id is not None)
         self.sdm.force_delete()
         self.assert_(self.sdm.id is None)
-
-
-class TimestampableMock(TimestampableModel):
-    pass
 
 
 class TimestampableModelTests(TestCase):
