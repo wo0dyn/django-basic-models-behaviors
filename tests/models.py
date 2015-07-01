@@ -1,4 +1,4 @@
-from basic_models_behaviors.models import PublishableModel, SoftDeletableModel, TimestampableModel
+from basic_models_behaviors.models import PublishableModel, SoftDeletableModel, TimestampableModel, CacheableModel
 
 
 class PublishableMock(PublishableModel):
@@ -10,4 +10,8 @@ class SoftDeletableMock(SoftDeletableModel):
 
 
 class TimestampableMock(TimestampableModel):
+    pass
+
+
+class CacheableMock(CacheableModel):
     pass

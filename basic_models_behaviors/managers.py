@@ -20,7 +20,16 @@ class CachedQuerySet(QuerySet):
             cache_content = cache.get(key)
             if cache_content is not None:
                 self._result_cache = [cache_content]
+                return self
         return super(CachedQuerySet, self).filter(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        pk = self.get_pk(kwargs)
+        if pk is not None:
+            clone = self.filter(*args, **kwargs)
+            if self._result_cache is not None and len(self._result_cache) > 0:
+                return clone
+        return super(CachedQuerySet, self).get(*args, **kwargs)
 
 
 class CacheManager(models.Manager):

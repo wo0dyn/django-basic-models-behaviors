@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
+from django.core.cache import cache
 
-from .models import PublishableMock, SoftDeletableMock, TimestampableMock
+from .models import PublishableMock, SoftDeletableMock, TimestampableMock, CacheableMock
+from basic_models_behaviors.managers import get_key_for_instance
 
 
 class PublishableTest(TestCase):
@@ -52,3 +54,80 @@ class TimestampableModelTests(TestCase):
     def test_updated_at(self):
         self.tm1.save()
         self.assert_(self.tm2.updated_at < self.tm1.updated_at)
+
+
+class CacheableModelTests(TestCase):
+
+    def setUp(self):
+        cache.clear()
+
+    def test_instance_is_cached_after_saving(self):
+        cm = CacheableMock()
+        cm.save()
+        key = get_key_for_instance(cm)
+        self.assertEqual(cache.get(key), cm)
+
+    def test_instance_is_cached_after_create(self):
+        cm = CacheableMock.objects.create()
+        key = get_key_for_instance(cm)
+        self.assertEqual(cache.get(key), cm)
+
+    def test_instance_is_cached_after_get_or_create(self):
+        cm, created = CacheableMock.objects.get_or_create()
+        self.assertTrue(created)
+        key = get_key_for_instance(cm)
+        self.assertEqual(cache.get(key), cm)
+
+    def test_instance_is_uncached_after_delete(self):
+        cm = CacheableMock.objects.create()
+        key = get_key_for_instance(cm)
+        cm.delete()
+        self.assertIsNone(cache.get(key))
+
+    def test_multiple_instances(self):
+        cm1 = CacheableMock.objects.create()
+        cm2 = CacheableMock.objects.create()
+        cm3 = CacheableMock.objects.create()
+        cm2.delete()
+        key = get_key_for_instance(cm1)
+        self.assertEqual(cache.get(key), cm1)
+        key = get_key_for_instance(cm3)
+        self.assertEqual(cache.get(key), cm3)
+
+    def test_queries_count_after_saving_and_filter(self):
+        with self.assertNumQueries(1):
+            self.test_instance_is_cached_after_saving()
+            cm = CacheableMock.objects.filter(pk=1)
+            self.assertEqual(len(cm), 1)
+
+    def test_queries_count_after_saving_and_get(self):
+        with self.assertNumQueries(1):
+            self.test_instance_is_cached_after_saving()
+            cm = CacheableMock.objects.get(pk=1)
+            self.assertEqual(len(cm), 1)
+
+    def test_queries_count_after_create_and_filter(self):
+        with self.assertNumQueries(1):
+            self.test_instance_is_cached_after_create()
+            cm = CacheableMock.objects.filter(pk=1)
+            self.assertEqual(len(cm), 1)
+
+    def test_queries_count_after_create_and_get(self):
+        with self.assertNumQueries(1):
+            self.test_instance_is_cached_after_create()
+            cm = CacheableMock.objects.get(pk=1)
+            self.assertEqual(len(cm), 1)
+
+    def test_queries_count_after_get_or_create_and_filter(self):
+        """ 4 queries here, because of transaction SAVEPOINT """
+        with self.assertNumQueries(4):
+            self.test_instance_is_cached_after_get_or_create()
+            cm = CacheableMock.objects.filter(pk=1)
+            self.assertEqual(len(cm), 1)
+
+    def test_queries_count_after_get_or_create_and_get(self):
+        """ 4 queries here, because of transaction SAVEPOINT """
+        with self.assertNumQueries(4):
+            self.test_instance_is_cached_after_get_or_create()
+            cm = CacheableMock.objects.get(pk=1)
+            self.assertEqual(len(cm), 1)

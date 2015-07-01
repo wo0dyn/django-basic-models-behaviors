@@ -5,8 +5,7 @@ from datetime import datetime
 from django.db import models
 from django.core.cache import cache
 
-from .managers import CacheManager
-from basic_models_behaviors.managers import get_key_for_instance
+from .managers import CacheManager, get_key_for_instance
 
 
 class PublishableModel(models.Model):
