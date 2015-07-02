@@ -1,3 +1,5 @@
+from django.db import models
+
 from basic_models_behaviors.models import PublishableModel, SoftDeletableModel, TimestampableModel, CacheableModel
 
 
@@ -14,4 +16,4 @@ class TimestampableMock(TimestampableModel):
 
 
 class CacheableMock(CacheableModel):
-    pass
+    name = models.CharField(max_length=150, null=True, blank=True)

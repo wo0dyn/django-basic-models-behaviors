@@ -141,3 +141,14 @@ class CacheableModelTests(TestCase):
             self.assertEqual(len(cms), 2)
             cm = CacheableMock.objects.filter(pk=1)
             self.assertEqual(len(cm), 1)
+
+    def test_cached_instance_after_update(self):
+        CacheableMock.objects.create()
+        key = get_key_for_instance(CacheableMock.objects.get(pk=1))
+        cms = CacheableMock.objects.filter(pk=1)
+        cms.update(name='test')
+        for cm in cms:
+            cm.save()
+        cm = CacheableMock.objects.get(pk=1)
+        self.assertEqual(cache.get(key), cm)
+        self.assertEqual(cm.name, 'test')
