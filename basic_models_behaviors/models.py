@@ -73,7 +73,7 @@ class TimestampableModel(models.Model):
 
 
 class CacheableModel(models.Model):
-    """ CacheableModel added a CacheManager for get() and get_or_create()
+    """ CacheableModel added a CacheManager for query
         methods to load data only once from the database """
 
     objects = CacheManager()
