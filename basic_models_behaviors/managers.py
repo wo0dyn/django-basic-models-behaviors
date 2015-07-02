@@ -19,26 +19,26 @@ class CachedQuerySet(QuerySet):
                 return kwargs[val]
         return None
 
-    def filter(self, *args, **kwargs):
-        pk = self.get_pk(kwargs)
-        if pk is not None:
-            key = get_key_for_instance(self.model, pk=pk)
-            cache_content = cache.get(key)
-            if cache_content is not None:
-                self._result_cache = [cache_content]
-                return self
-        else:
-            pks = self.get_pks(kwargs)
-            if pks is not None:
-                self._result_cache = []
-                for pk in pks:
-                    key = get_key_for_instance(self.model, pk=pk)
-                    cache_content = cache.get(key)
-                    if cache_content is not None:
-                        self._result_cache.append(cache_content)
-                if len(self._result_cache) > 0:
-                    return self
+    def get_all_pks(self, kwargs):
+        pks = []
+        for val in ('pk', 'pk__exact', 'id', 'id__exact', 'pk__in', 'id__in'):
+            if val in kwargs:
+                pks = kwargs[val] if type(kwargs[val]) is list else [kwargs[val]]
+        if len(pks) > 0:
+            return pks
+        return None
 
+    def filter(self, *args, **kwargs):
+        pks = self.get_all_pks(kwargs)
+        if pks is not None:
+            self._result_cache = []
+            for pk in pks:
+                key = get_key_for_instance(self.model, pk=pk)
+                cache_content = cache.get(key)
+                if cache_content is not None:
+                    self._result_cache.append(cache_content)
+            if len(self._result_cache) > 0:
+                return self
         return super(CachedQuerySet, self).filter(*args, **kwargs)
 
     def get(self, *args, **kwargs):
