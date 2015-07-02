@@ -104,7 +104,7 @@ class CacheableModelTests(TestCase):
         with self.assertNumQueries(1):
             self.test_instance_is_cached_after_saving()
             cm = CacheableMock.objects.get(pk=1)
-            self.assertEqual(len(cm), 1)
+            self.assertEqual(cm.pk, 1)
 
     def test_queries_count_after_create_and_filter(self):
         with self.assertNumQueries(1):
@@ -116,7 +116,7 @@ class CacheableModelTests(TestCase):
         with self.assertNumQueries(1):
             self.test_instance_is_cached_after_create()
             cm = CacheableMock.objects.get(pk=1)
-            self.assertEqual(len(cm), 1)
+            self.assertEqual(cm.pk, 1)
 
     def test_queries_count_after_get_or_create_and_filter(self):
         """ 4 queries here, because of transaction SAVEPOINT """
@@ -130,7 +130,7 @@ class CacheableModelTests(TestCase):
         with self.assertNumQueries(4):
             self.test_instance_is_cached_after_get_or_create()
             cm = CacheableMock.objects.get(pk=1)
-            self.assertEqual(len(cm), 1)
+            self.assertEqual(cm.pk, 1)
 
     def test_multiple_objects_returned_with_filters(self):
         with self.assertNumQueries(3):

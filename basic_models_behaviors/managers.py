@@ -46,7 +46,7 @@ class CachedQuerySet(QuerySet):
         if pk is not None:
             clone = self.filter(*args, **kwargs)
             if self._result_cache is not None and len(self._result_cache) > 0:
-                return clone
+                return clone[0]
         return super(CachedQuerySet, self).get(*args, **kwargs)
 
 
