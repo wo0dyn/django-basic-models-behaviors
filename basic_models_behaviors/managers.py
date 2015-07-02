@@ -13,12 +13,6 @@ class CachedQuerySet(QuerySet):
                 return kwargs[val]
         return None
 
-    def get_pks(self, kwargs):
-        for val in ('pk__in', 'id__in'):
-            if val in kwargs:
-                return kwargs[val]
-        return None
-
     def get_all_pks(self, kwargs):
         pks = []
         for val in ('pk', 'pk__exact', 'id', 'id__exact', 'pk__in', 'id__in'):
