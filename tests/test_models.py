@@ -131,3 +131,13 @@ class CacheableModelTests(TestCase):
             self.test_instance_is_cached_after_get_or_create()
             cm = CacheableMock.objects.get(pk=1)
             self.assertEqual(len(cm), 1)
+
+    def test_multiple_objects_returned_with_filters(self):
+        with self.assertNumQueries(3):
+            CacheableMock.objects.create()
+            CacheableMock.objects.create()
+            CacheableMock.objects.create()
+            cms = CacheableMock.objects.filter(pk__in=[1, 3])
+            self.assertEqual(len(cms), 2)
+            cm = CacheableMock.objects.filter(pk=1)
+            self.assertEqual(len(cm), 1)

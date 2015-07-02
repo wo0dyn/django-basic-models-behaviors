@@ -13,6 +13,12 @@ class CachedQuerySet(QuerySet):
                 return kwargs[val]
         return None
 
+    def get_pks(self, kwargs):
+        for val in ('pk__in', 'id__in'):
+            if val in kwargs:
+                return kwargs[val]
+        return None
+
     def filter(self, *args, **kwargs):
         pk = self.get_pk(kwargs)
         if pk is not None:
@@ -21,6 +27,18 @@ class CachedQuerySet(QuerySet):
             if cache_content is not None:
                 self._result_cache = [cache_content]
                 return self
+        else:
+            pks = self.get_pks(kwargs)
+            if pks is not None:
+                self._result_cache = []
+                for pk in pks:
+                    key = get_key_for_instance(self.model, pk=pk)
+                    cache_content = cache.get(key)
+                    if cache_content is not None:
+                        self._result_cache.append(cache_content)
+                if len(self._result_cache) > 0:
+                    return self
+
         return super(CachedQuerySet, self).filter(*args, **kwargs)
 
     def get(self, *args, **kwargs):
