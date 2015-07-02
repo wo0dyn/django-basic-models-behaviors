@@ -7,12 +7,6 @@ from django.db.models.query import QuerySet
 
 class CachedQuerySet(QuerySet):
 
-    def get_pk(self, kwargs):
-        for val in ('pk', 'pk__exact', 'id', 'id__exact'):
-            if val in kwargs:
-                return kwargs[val]
-        return None
-
     def get_all_pks(self, kwargs):
         pks = []
         for val in ('pk', 'pk__exact', 'id', 'id__exact', 'pk__in', 'id__in'):
@@ -36,8 +30,8 @@ class CachedQuerySet(QuerySet):
         return super(CachedQuerySet, self).filter(*args, **kwargs)
 
     def get(self, *args, **kwargs):
-        pk = self.get_pk(kwargs)
-        if pk is not None:
+        pks = self.get_all_pks(kwargs)
+        if pks is not None:
             clone = self.filter(*args, **kwargs)
             if self._result_cache is not None and len(self._result_cache) > 0:
                 return clone[0]
