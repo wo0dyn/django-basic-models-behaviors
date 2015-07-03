@@ -2,8 +2,10 @@
 
 from datetime import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.core.cache import cache
+from django.template.defaultfilters import slugify
 
 from .managers import CacheManager, get_key_for_instance
 
@@ -88,3 +90,36 @@ class CacheableModel(models.Model):
     def delete(self):
         cache.delete(get_key_for_instance(self))
         super(CacheableModel, self).delete()
+
+
+class SlugableModel(models.Model):
+    """ SlugableModel generate unique model slugs """
+
+    slug = models.SlugField(editable=False)
+
+    class Meta:
+        abstract = True
+
+    def _make_slug(self):
+        return slugify('{0}'.format(self))
+
+    def _make_unique_slug(self):
+        queryset = self.__class__._default_manager
+        slug = self._make_slug()
+        try:
+            initial_slug = slug
+            queryset.get(slug=slug)
+            i = 1
+            while True:
+                slug = '{0}-{1}'.format(initial_slug, i)
+                queryset.get(slug=slug)
+                i += 1
+
+        except ObjectDoesNotExist:
+            pass
+        return slug
+
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = self._make_unique_slug()
+        return super(SlugableModel, self).save(*args, **kwargs)

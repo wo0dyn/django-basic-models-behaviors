@@ -3,7 +3,7 @@
 from django.test import TestCase
 from django.core.cache import cache
 
-from .models import PublishableMock, SoftDeletableMock, TimestampableMock, CacheableMock
+from .models import PublishableMock, SoftDeletableMock, TimestampableMock, CacheableMock, SlugableMock
 from basic_models_behaviors.managers import get_key_for_instance
 
 
@@ -152,3 +152,23 @@ class CacheableModelTests(TestCase):
         cm = CacheableMock.objects.get(pk=1)
         self.assertEqual(cache.get(key), cm)
         self.assertEqual(cm.name, 'test')
+
+
+class SlugableModelTests(TestCase):
+
+    def setUp(self):
+        self.sm = SlugableMock.objects.create(
+            label='Never play leapfrog on a unicorn!')
+
+    def test_simple_sluggable_model_creation(self):
+        self.assertEquals(self.sm.slug, self.sm._make_slug())
+
+    def test_sluggable_model_unicity(self):
+        sm2 = SlugableMock.objects.create(
+            label='Really, never.')
+        self.assertNotEqual(self.sm.slug, sm2.slug)
+
+
+# TODO test multiple fields models
+#
+# TODO test models with unique_together fields
