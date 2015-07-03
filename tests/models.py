@@ -1,23 +1,23 @@
 from django.db import models
 
-from basic_models_behaviors.models import PublishableModel, SoftDeletableModel, TimestampableModel, CacheableModel, SlugableModel
+from basic_models_behaviors import models as models_behaviors
 
 
-class PublishableMock(PublishableModel):
+class PublishableMock(models_behaviors.PublishableModel):
     pass
 
 
-class SoftDeletableMock(SoftDeletableModel):
+class SoftDeletableMock(models_behaviors.SoftDeletableModel):
     pass
 
 
-class TimestampableMock(TimestampableModel):
+class TimestampableMock(models_behaviors.TimestampableModel):
     pass
 
 
-class CacheableMock(CacheableModel):
+class CacheableMock(models_behaviors.CacheableModel):
     name = models.CharField(max_length=150, null=True, blank=True)
 
 
-class SlugableMock(SlugableModel):
+class SlugableMock(models_behaviors.SlugableModel):
     label = models.CharField(max_length=255)

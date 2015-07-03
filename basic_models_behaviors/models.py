@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,7 +9,9 @@ from .managers import CacheManager, get_key_for_instance
 
 
 class PublishableModel(models.Model):
-    """ PublishableModel behavior """
+    """
+    PublishableModel behavior
+    """
 
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
 
@@ -34,9 +34,11 @@ class PublishableModel(models.Model):
 
 
 class SoftDeletableModel(models.Model):
-    """ SoftDeletableModel behavior will add deleted_at field in set the
-        current timestamp instead of delete the object.
-        force_delete() will actually delete the model. """
+    """
+    SoftDeletableModel behavior will add deleted_at field in set the current
+    timestamp instead of delete the object.force_delete() will actually delete
+    the model.
+    """
 
     deleted_at = models.DateTimeField(blank=True, null=True, db_index=True,
         editable=False)
@@ -60,8 +62,10 @@ class SoftDeletableModel(models.Model):
 
 
 class TimestampableModel(models.Model):
-    """ TimestampableModel behavior will automatically add and set appropriate
-        values to created_at and updated_at fields. """
+    """
+    TimestampableModel behavior will automatically add and set appropriate
+    values to created_at and updated_at fields.
+    """
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True,
         editable=False)
@@ -75,8 +79,10 @@ class TimestampableModel(models.Model):
 
 
 class CacheableModel(models.Model):
-    """ CacheableModel added a CacheManager for query
-        methods to load data only once from the database """
+    """
+    CacheableModel added a CacheManager for query methods to load data only once
+    from the database
+    """
 
     objects = CacheManager()
 
@@ -93,7 +99,9 @@ class CacheableModel(models.Model):
 
 
 class SlugableModel(models.Model):
-    """ SlugableModel generate unique model slugs """
+    """
+    SlugableModel generate unique model slug
+    """
 
     slug = models.SlugField(editable=False)
 
