@@ -159,7 +159,7 @@ class SlugableModelTests(TestCase):
             label='Never play leapfrog on a unicorn!')
 
     def test_simple_sluggable_model_creation(self):
-        self.assertEquals(self.sm.slug, self.sm._make_slug())
+        self.assertEquals(self.sm.slug, 'never-play-leapfrog-on-a-unicorn')
 
     def test_sluggable_model_unicity(self):
         sm2 = models.SlugableMock.objects.create(
