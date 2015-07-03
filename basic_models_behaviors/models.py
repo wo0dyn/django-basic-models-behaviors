@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.core.cache import cache
-from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 
 from .managers import CacheManager, get_key_for_instance
 
