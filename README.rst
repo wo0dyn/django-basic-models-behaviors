@@ -104,3 +104,4 @@ Authors
 -------
 
 @wo0dyn • Nicolas Dubois <nicolas.c.dubois@gmail.com>
+@HarmO_ • David Talagrand <dtharmo@gmail.com>
