@@ -3,7 +3,8 @@
 from datetime import datetime
 
 from django.db import models
-from managers import CacheManager
+
+from .managers import CacheManager
 
 
 class PublishableModel(models.Model):

@@ -27,3 +27,6 @@ pip-log.txt
 /.hg/*
 */.hg/*
 .hgignore
+
+# Docs
+docs/_build

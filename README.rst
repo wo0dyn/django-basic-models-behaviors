@@ -1,7 +1,20 @@
+==============================
 Django: Basic Models Behaviors
 ==============================
 
-django-basic-models-behaviors is a tiny app to provide basic behaviors like:
+.. image:: https://img.shields.io/pypi/v/django-basic-models-behaviors.svg
+    :target: https://pypi.python.org/pypi/django-basic-models-behaviors/
+    :alt: Latest Version on PyPI
+
+.. image:: https://img.shields.io/pypi/pyversions/django-basic-models-behaviors.svg
+    :target: https://pypi.python.org/pypi/django-basic-models-behaviors/
+    :alt: Supported Python versions
+
+.. image:: https://img.shields.io/travis/wo0dyn/django-basic-models-behaviors.svg
+    :target: https://travis-ci.org/wo0dyn/django-basic-models-behaviors
+    :alt: TravisCI status
+
+Tiny app to provide basic behaviors for django models, like:
 
 * Timestampable
 * Publishable
@@ -11,7 +24,7 @@ django-basic-models-behaviors is a tiny app to provide basic behaviors like:
 Installation
 ------------
 
-Ok, so far: you're crazy! But here is the way you can install this app::
+From PyPI::
 
     $ pip install django-basic-models-behaviors
 
@@ -84,9 +97,10 @@ Tests
 
 Run tests::
 
-    $ cd tests && python manage.py test
+    $ pip install -r tests/requirements.txt
+    $ py.test --ds=tests.settings tests
 
 Authors
 -------
 
-Nicolas Dubois <nicolas.c.dubois@gmail.com>
+* `@wo0dyn <https://github.com/wo0dyn>`_ • Nicolas Dubois <nicolas.c.dubois@gmail.com>
